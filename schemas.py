@@ -10,8 +10,8 @@ class Product(BaseModel):
 
 
 class FAQ(BaseModel):
-    question: str
-    answer: str
+    question: Optional[str] = None
+    answer: Optional[str] = None
 
 
 class BrandData(BaseModel):
