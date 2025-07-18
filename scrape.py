@@ -19,7 +19,7 @@ def extract_links_from_html(html):
     links = [link for link in links if len(link) > 3]
     return links
 
-def clean_html(html, max_length):
+def clean_html(html):
     soup = BeautifulSoup(html, "html.parser")
     cleaned_content = soup.get_text(separator="\n")
     cleaned_content = "\n".join(

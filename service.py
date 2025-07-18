@@ -10,17 +10,23 @@ from schemas import BrandData, Product, FAQ
 
 
 def get_brand_data_service(url):
+    print("1")
     parsed_url = urlparse(url)
-    home_html = get_html(parsed_url)
+    home_html = get_html(url)
     home_text = clean_html(home_html)
+    print("2")
     links = extract_links_from_html(home_html)
-
+    print("3")
     categorized_links = categorize_links(links)
-    hero_products_raw = extract_products(split_text(home_html))
+    print("4")
+    hero_products_raw = extract_products(split_text(home_html,6000))
 
+    print("5")
     # Extract all products
     all_products_raw = []
-    for link in categorized_links['products']:
+    for index, link in enumerate(categorized_links['products']):
+        if index > 5:
+            break
         try:
             if link[0] != "h":
                 link = "https://" + parsed_url.netloc + link
@@ -29,6 +35,7 @@ def get_brand_data_service(url):
         except:
             continue
 
+    print("6")
     # Extract policy
     policy_text = ""
     for link in categorized_links['policy']:
@@ -41,6 +48,7 @@ def get_brand_data_service(url):
             continue
     policy = extract_policy(policy_text)
 
+    print("7")
     # Extract FAQs
     if categorized_links['faq']:
         link = categorized_links['faq']
@@ -52,6 +60,7 @@ def get_brand_data_service(url):
     else:
         faqs_raw = extract_faqs(home_text)
 
+    print("8")
     # Extract contact info
     if categorized_links['contact']:
         link = categorized_links['contact']
@@ -63,6 +72,7 @@ def get_brand_data_service(url):
     else:
         contacts = extract_email_and_phone(home_text)
 
+    print("9")
     # Extract brand description
     if categorized_links['about']:
         link = categorized_links['about']
@@ -74,6 +84,7 @@ def get_brand_data_service(url):
     else:
         description = extract_brand_description(home_text)
 
+    print("10")
     # Convert raw data to Pydantic models
     hero_products = [Product(**p) for p in hero_products_raw]
     all_products = [Product(**p) for p in all_products_raw] + hero_products

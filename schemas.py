@@ -21,7 +21,7 @@ class BrandData(BaseModel):
     return_refund_policy: Optional[str] = None
     faqs: List[FAQ]
     social_handles: Optional[List[str]] = None
-    emails: List[EmailStr] = []
+    emails: List[str] = []
     phone_numbers: List[str] = []
     brand_description: Optional[str] = None
     important_links: Optional[List[str]] = None
