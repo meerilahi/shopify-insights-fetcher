@@ -29,8 +29,6 @@ def clean_html(html, max_length):
 
 
 
-
-
 if __name__ == "__main__":
 
     # url = input("Enter a URL: ")
