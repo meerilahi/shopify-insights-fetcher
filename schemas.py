@@ -3,10 +3,9 @@ from pydantic import BaseModel, EmailStr
 
 
 class Product(BaseModel):
-    name: str
+    name: Optional[str] = None
     description: Optional[str] = None
     price: Optional[float] = None
-    url: Optional[str] = None
     image_url: Optional[str] = None
 
 

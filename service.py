@@ -6,7 +6,7 @@ from categorize_links import categorize_links
 from extract_faqs import extract_faqs
 from extract_email_and_phone import extract_email_and_phone
 from extract_brand_description import extract_brand_description
-from schemas import BrandData
+from schemas import BrandData, Product, FAQ
 
 # get home page text and link
 url = "https://fanjoy.co/collections/take-care-of-yourself"
@@ -50,9 +50,9 @@ if categorized_links['faq'] is not None:
         link = parsed_url.netloc + categorized_links['faq']
     html = get_html(link)
     faq_text = clean_html(html)
-    faq = extract_faqs(faq_text)
+    faqs = extract_faqs(faq_text)
 else:
-    faq = extract_faqs(home_text)
+    faqs = extract_faqs(home_text)
 
 # extract emails and phone numbers
 if categorized_links['contact'] is not None:
@@ -75,6 +75,23 @@ else:
     description = extract_brand_description(home_text)
 
 
+hero_products_list = [ 
+    Product(name=product.get("name",None),description=product.get("description",None), price=product.get("price",None),image_url=product.get("image_url",None)) 
+    for product in hero_products]
+all_products_list = [ 
+    Product(name=product.get("name",None),description=product.get("description",None), price=product.get("price",None),image_url=product.get("image_url",None)) 
+    for product in all_products].extend(hero_products_list)
+faq_list = [FAQ(question=faq.get("question", None), answer=faq.get("answer", None) ) for faq in faqs]
 
-    
-
+brand_data = BrandData(
+    whole_product_catalog=all_products,        
+    hero_products=hero_products,                
+    privacy_policy=policy.get("privacy_policy"), 
+    return_refund_policy=policy.get("return_refund_policy"), 
+    faqs=faq_list,                                   
+    social_handles=categorized_links.get("social_handles", []),                          
+    emails=contacts.get("emails", []),         
+    phone_numbers=contacts.get("phone_numbers", []),   
+    brand_description=description,               
+    important_links = categorized_links.get("important_links", [])                      
+)
