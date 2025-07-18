@@ -27,16 +27,3 @@ def clean_html(html, max_length):
     )
     cleaned_content_list = [cleaned_content[i : i + max_length] for i in range(0, len(cleaned_content), max_length)]
     return cleaned_content_list
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
-
-

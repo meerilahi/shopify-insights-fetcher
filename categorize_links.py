@@ -4,15 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def categorize_links(links):
-    """
-    Categorizes a list of links into meaningful types using LLM.
-    
-    Args:
-        links (list[str]): A list of raw URLs.
-    
-    Returns:
-        dict: A dictionary with categorized links like products, social handles, contact, policy, faq, etc.
-    """
+
 
     prompt_template = PromptTemplate(
         template=
