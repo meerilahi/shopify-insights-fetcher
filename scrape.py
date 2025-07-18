@@ -25,5 +25,7 @@ def clean_html(html, max_length):
     cleaned_content = "\n".join(
         line.strip() for line in cleaned_content.splitlines() if line.strip()
     )
-    cleaned_content_list = [cleaned_content[i : i + max_length] for i in range(0, len(cleaned_content), max_length)]
-    return cleaned_content_list
+    return cleaned_content
+
+def split_text(text, max_length):
+    return [text[i : i + max_length] for i in range(0, len(text), max_length)]

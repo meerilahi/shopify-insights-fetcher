@@ -13,6 +13,7 @@ Instructions:
 - Each product should have the following fields:
   - name: The product's title or name
   - description: A short description, if available
+  - image_url : Url of image
   - price: The product's price (numeric or formatted string)
 
 If any field is missing in the HTML, omit it from that product's object.
@@ -39,9 +40,10 @@ instruction_schema = {
                 "properties": {
                     "name": {"type": "string"},
                     "description": {"type": "string"},
+                    "image_url": {"type": "string"},
                     "price": {"type": "string"}
                 },
-                "required": ["name", "description", "price"]
+                "required": ["name", "image_url", "description", "price"]
             }
         }
     },

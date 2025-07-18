@@ -1,10 +1,7 @@
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 
-def extract_policy(text):
-
-
-    prompt_template = PromptTemplate(
+prompt_template = PromptTemplate(
         template=
         """
 You are a legal text analyzer. From the given website content, extract the following two sections if they exist:
@@ -22,9 +19,9 @@ Return a JSON-compatible dictionary with two keys: "privacy_policy" and "return_
         input_variables=["text"]
     )
 
-    model = ChatOpenAI(model="gpt-4o-2024-08-06")
+model = ChatOpenAI(model="gpt-4o-2024-08-06")
 
-    schema = {
+schema = {
         "title": "ExtractedPolicySections",
         "type": "object",
         "properties": {
@@ -34,7 +31,9 @@ Return a JSON-compatible dictionary with two keys: "privacy_policy" and "return_
         "required": ["privacy_policy", "return_refund_policy"]
     }
 
-    model = model.with_structured_output(schema)
+model = model.with_structured_output(schema)
 
+
+def extract_policy(text):
     prompt = prompt_template.invoke({"text": text})
     return model.invoke(prompt)

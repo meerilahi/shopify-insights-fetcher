@@ -3,12 +3,10 @@ from langchain_core.prompts import PromptTemplate
 from dotenv import load_dotenv
 load_dotenv()
 
-def categorize_links(links):
 
-
-    prompt_template = PromptTemplate(
-        template=
-        """
+prompt_template = PromptTemplate(
+    template=
+    """
 You are an expert in web navigation and user experience. Given the following list of URLs from a brand or e-commerce website, categorize them into the following keys and return a JSON-compatible dictionary:
 
 1. **products**: A list of links related to product categories or types (e.g., new arrivals, trending, kitchen items, shoes, clothing, electronics).
@@ -25,30 +23,30 @@ Return only the structured dictionary.
 
 Links:
 {links}
-        """,
-        input_variables=["links"]
-    )
+    """,
+    input_variables=["links"]
+)
 
-    model = ChatOpenAI(model="gpt-4o-2024-08-06")
+model = ChatOpenAI(model="gpt-4o-2024-08-06")
 
-    # Define output schema
-    schema = {
-        "title": "LinkCategorization",
-        "type": "object",
-        "properties": {
-            "products": {"type": "array", "items": {"type": "string"}},
-            "social_handles": {"type": "array", "items": {"type": "string"}},
-            "contact": {"type": ["string", "null"]},
-            "policy": {"type": "array", "items": {"type": "string"}},
-            "faq": {"type": ["string", "null"]},
-            "about": {"type": ["string", "null"]},
-            "important_links": {"type": "array", "items": {"type": "string"}},
-        },
-        "required": ["products", "social_handles", "contact", "policy", "faq", "about", "important_links"]
-    }
+schema = {
+    "title": "LinkCategorization",
+    "type": "object",
+    "properties": {
+        "products": {"type": "array", "items": {"type": "string"}},
+        "social_handles": {"type": "array", "items": {"type": "string"}},
+        "contact": {"type": ["string", "null"]},
+        "policy": {"type": "array", "items": {"type": "string"}},
+        "faq": {"type": ["string", "null"]},
+        "about": {"type": ["string", "null"]},
+        "important_links": {"type": "array", "items": {"type": "string"}},
+    },
+    "required": ["products", "social_handles", "contact", "policy", "faq", "about", "important_links"]
+}
 
-    model = model.with_structured_output(schema)
+model = model.with_structured_output(schema)
 
+def categorize_links(links):
     formatted_links = "\n".join(links)
     prompt = prompt_template.invoke({"links": formatted_links})
     return model.invoke(prompt)

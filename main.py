@@ -1,50 +1,54 @@
+from urllib.parse import urlparse
 from extract_policy import extract_policy
-from scrape import get_html, extract_links_from_html, clean_html
+from scrape import get_html, extract_links_from_html, clean_html, split_text
 from extract_products import extract_products
 from categorize_links import categorize_links
 from extract_faqs import extract_faqs
 
 # get home page text and link
-home_html = get_html("https://fanjoy.co/collections/take-care-of-yourself")
-home_texts = clean_html(home_html, 6000)
+url = "https://fanjoy.co/collections/take-care-of-yourself"
+parsed_url = urlparse(url)
+home_html = get_html(parsed_url)
+home_text = clean_html(home_html)
 links = extract_links_from_html(home_html)
 
 # categorize links
 categorized_links = categorize_links(links)
 
 # extract heor products
-hero_products = extract_products(home_texts)
+hero_products = extract_products(split_text(home_html))
 
 # extract all products
 all_products = []
 for link in categorized_links['products']:
     try:
         if link[0] != "h":
-            url = "https://fanjoy.co" + link
-        html = get_html(url)
-        texts = clean_html(html, 6000)
-        all_products.extend(extract_products(texts))
+            link = parsed_url.netloc + link
+        html = get_html(link)
+        all_products.extend(extract_products(split_text(html)))
     except:
         continue
 
 # extract policy
-policy_text_list = []
+policy_text = "" 
 for link in categorized_links['policy']:
-    if link[0] != "h":
-        url = "https://fanjoy.co" + link
-    html = get_html(url)
-    policy_text_list.extend(clean_html(html, 6000))
-    policy_text = "\n".join(policy_text_list)
+    try:
+        if link[0] != "h":
+            link = parsed_url.netloc + link
+        html = get_html(link)
+        policy_text + clean_html(html)
+    except:
+        continue
 policy = extract_policy(policy_text)
 
 # extract FAQs
 if categorized_links['faq'] is not None:
     if categorized_links['faq'][0] != "h":
-        url = "https://fanjoy.co" + categorized_links['faq']
-    html = get_html(url)
-    faq_text = "\n".join(clean_html(html, 6000))
+        link = parsed_url.netloc + categorized_links['faq']
+    html = get_html(link)
+    faq_text = clean_html(html)
     faq = extract_faqs(faq_text)
 else:
-    faq = extract_faqs("\n".join(home_texts))
+    faq = extract_faqs(home_text)
 
 

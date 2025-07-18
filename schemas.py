@@ -6,7 +6,7 @@ class Product(BaseModel):
     name: str
     description: Optional[str] = None
     price: Optional[float] = None
-    url: Optional[HttpUrl] = None
+    url: Optional[str] = None
     image_url: Optional[HttpUrl] = None
 
 
