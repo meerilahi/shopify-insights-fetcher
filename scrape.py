@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from extract_products import extract_products
 
 def get_html(url):
     try:
@@ -29,16 +30,13 @@ def clean_html(html, max_length):
 
 
 
-if __name__ == "__main__":
 
-    # url = input("Enter a URL: ")
-    html = get_html("https://fanjoy.co/collections/take-care-of-yourself")
-    print(len(html))
-
-    links = extract_links_from_html(html)
-    print(len(links))
-
-    texts = clean_html(html, 6000)
-    print(len(texts)) 
+    
+    
+    
+    
+    
+    
+    
 
 
